@@ -1,0 +1,16 @@
+_ReSharper.*
+*.suo
+*.cache
+*.user
+*.orig
+*~
+obj/
+bin/
+Debug/
+Release/
+*.bak
+*.output
+*.sdf
+ipch/
+.vs/
+packages/
