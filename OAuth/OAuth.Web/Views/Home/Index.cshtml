@@ -1,0 +1,46 @@
+﻿<html>
+<head>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <link rel="stylesheet" href="~/Styles/bootstrap.min.css" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">OAuth</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">One account for every site</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <br /><br />
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#gmail" role="tab" aria-controls="v-pills-home" aria-selected="true">Gmail</a>
+                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#fb" role="tab" aria-controls="v-pills-profile" aria-selected="false">Facebook</a>
+                        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#linkedin" role="tab" aria-controls="v-pills-messages" aria-selected="false">LinkedIn</a>
+                        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#github" role="tab" aria-controls="v-pills-settings" aria-selected="false">GitHub</a>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="gmail" role="tabpanel" aria-labelledby="v-pills-home-tab">Gmail</div>
+                        <div class="tab-pane fade" id="fb" role="tabpanel" aria-labelledby="v-pills-profile-tab">Facebook</div>
+                        <div class="tab-pane fade" id="linkedin" role="tabpanel" aria-labelledby="v-pills-messages-tab">LinkedIn</div>
+                        <div class="tab-pane fade" id="github" role="tabpanel" aria-labelledby="v-pills-settings-tab">GitHub</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
