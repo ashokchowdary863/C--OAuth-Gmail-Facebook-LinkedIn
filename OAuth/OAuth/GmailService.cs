@@ -2,18 +2,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mail;
+using MailKit;
+using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 
 namespace OAuthService {
   public class GmailService {
-      public  void SendGmail(MailInput mailInput )
+      public  bool SendGmail(MailInput mailInput )
       {
-        var message = CreateMessage(mailInput);
-        Send(message,mailInput.EmailAddress,mailInput.OAuthToken);
-       
+        try
+        {
+          var message = CreateMessage(mailInput);
+          Send(message, mailInput.EmailAddress, mailInput.OAuthToken);
+          return true;
+        }
+        catch (Exception e)
+        {
+          return false;
+        }
+
       }
 
     public MimeMessage CreateMessage(MailInput mailInput)
@@ -24,34 +37,23 @@ namespace OAuthService {
         message.To.Add( new MailboxAddress( "", str ) );
       }
       message.Subject = mailInput.Subject;
-      var attachment = new MimePart( mailInput.ContentType, mailInput.ContentSubType ) {
-        ContentDisposition = new ContentDisposition( ContentDisposition.Attachment ),
-        ContentTransferEncoding = ContentEncoding.Base64,
-        FileName = Path.GetFileName( mailInput.AttachmentFilePath ),
-        ContentObject = new ContentObject( File.OpenRead( mailInput.AttachmentFilePath ), ContentEncoding.Default )
+
+      message.Body = new TextPart("plain")
+      {
+        Text = mailInput.Body
       };
-      if ( mailInput.ContentType != null ) {
-        var mailBody = new TextPart( "plain" ) {
-          Text = mailInput.Body
-        };
-        var multipart = new Multipart( "mixed" ) { mailBody, attachment };
-        message.Body = multipart;
-      }
-      else {
-        message.Body = new TextPart( "plain" ) {
-          Text = mailInput.Body
-        };
-      }
 
       return message;
     }
     public void Send(MimeMessage message,string emailAddress,string accessToken)
     {
-      using ( var client = new SmtpClient() ) {
-        client.ServerCertificateValidationCallback = ( s, c, h, e ) => true;
-        client.Connect( "smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls );
-        client.Authenticate( emailAddress, accessToken);
-        client.Send( message );
+      using ( var client = new SmtpClient( new ProtocolLogger( Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath,"imap.log") ) ) ) {
+        client.Connect( "smtp.gmail.com", 587 );
+
+        // use the OAuth2.0 access token obtained above
+        var oauth2 = new SaslMechanismOAuth2( emailAddress, accessToken );
+        client.Authenticate( oauth2 );
+        client.Send(message);
         client.Disconnect( true );
       }
     }
